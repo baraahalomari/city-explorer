@@ -1,75 +1,111 @@
 import React from 'react';
 import axios from 'axios';
-import { Form, Button, Card } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Card, Form, Button } from 'react-bootstrap/';
+import Weather from './Components/Weather';
+
+
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      searchQuery: '',
-      locData: '',
-      displayMap: false,
-      errorMessage: false
+      findQuery: '',
+      dataLoc: '',
+      showMap: false,
+      notFoundError: false,
+      displayWeather: false,
+      weatherInfo: [],
+      latitude: '',
+      longitude: '',
+
     }
 
   }
-  getLocation = async (event) => {
-    event.preventDefault();
-    let locUrl = `https://eu1.locationiq.com/v1/search.php?key=pk.318d7e351679b370b49a56a43771dcfc&q=${this.state.searchQuery}&format=json`
-    try {
-      let locResult = await axios.get(locUrl);
+
+  callLocation = async (prv) => {
+    prv.preventDefault();
+    
+    let serverPort = process.env.REACT_APP_SERVER;
+    let getUrl = `https://eu1.locationiq.com/v1/search.php?key=pk.318d7e351679b370b49a56a43771dcfc&q=${this.state.findQuery}&format=json`;
+
+     try{
+      let locOutcome = await axios.get(getUrl);
+
       this.setState({
-        locData: locResult.data[0],
-        displayMap: true
+        dataLoc: locOutcome.data[0],
+        showMap: true,
+
       })
+      console.log(this.state.dataLoc);
+     }catch{
+
+     }
+
+    try {
+      let weatherData = await axios.get(`${serverPort}/weather?cityName=${this.state.findQuery}`);
+      this.setState({
+        weatherInfo: weatherData.data,
+        displayWeather: true
+
+      })
+      console.log(this.state.weatherInfo);
     }
     catch {
       this.setState({
-        displayMap: false,
-        errorMessage: true
+        showMap: false,
+        notFoundError: true,
+        displayWeather: false,
       })
+      console.log('weather error');
     }
   }
-  updateSearchQuery = (event) => {
+
+  updateFindQuery = (event) => {
     this.setState({
-      searchQuery: event.target.value
+      findQuery: event.target.value
     })
   }
   render() {
     return (
       <>
-        <Form onSubmit={this.getLocation}>
+        <h1>City Explorer</h1>
+        <Form onSubmit={this.callLocation}>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Location </Form.Label>
-            <Form.Control placeholder="Enter location" onChange={this.updateSearchQuery} />
+            <Form.Label>Locations </Form.Label>
+            <Form.Control placeholder="Enter location" onChange={this.updateFindQuery} />
 
           </Form.Group>
           <Button variant="primary" type="submit">
-            Submit
-  </Button>
+            Explorer
+          </Button>
         </Form>
-        {/* <p> {this.state.locData.display_name} </p>
-        {this.state.displayMap &&
-          <img
-            src={`https://maps.locationiq.com/v3/staticmap?key=pk.318d7e351679b370b49a56a43771dcfc&center=${this.state.locData.lat},${this.state.locData.lon}`} alt=''
-          />
-        } */}
-       
-        {this.state.displayMap &&
-        <Card style={{ width: '18rem' }}>
-          <Card.Img variant="top" src={`https://maps.locationiq.com/v3/staticmap?key=pk.318d7e351679b370b49a56a43771dcfc&center=${this.state.locData.lat},${this.state.locData.lon}`} />
-          <Card.Body>
-            <Card.Title>Locations</Card.Title>
-            <Card.Text>
-              {this.state.locData.display_name}
-            </Card.Text>
-            <Button variant="primary">Go somewhere</Button>
-          </Card.Body>
-        </Card>
-}
+
+        {this.state.showMap &&
+          <Card style={{ width: '18rem' }}>
+            <Card.Img variant="top" src={`https://maps.locationiq.com/v3/staticmap?key=pk.318d7e351679b370b49a56a43771dcfc&center=${this.state.dataLoc.lat},${this.state.dataLoc.lon}`} />
+            <Card.Body>
+              <Card.Title>Locations</Card.Title>
+              <Card.Text>
+                {this.state.dataLoc.display_name}
+              </Card.Text>
+              <Card.Text>Latitude:{this.state.dataLoc.lat}</Card.Text>
+              <Card.Text>Longtutde:{this.state.dataLoc.lon}</Card.Text>
+
+            </Card.Body>
+          </Card>
+        }
+        {this.state.displayWeather &&
+        <Weather weatherData={this.state.weatherInfo} />
+        }
+     
+
       </>
     )
-  }  
+  }
 }
+
+
+
 export default App;
