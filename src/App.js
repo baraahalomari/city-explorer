@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Form, Button } from 'react-bootstrap/';
+
 import Weather from './Components/Weather';
+import Movies from './Components/Movie';
+import { Card, Form, Button } from 'react-bootstrap/';
+
+
 
 
 
@@ -17,8 +21,11 @@ class App extends React.Component {
       notFoundError: false,
       displayWeather: false,
       weatherInfo: [],
+
+      moviesInfo:[],
       latitude: '',
       longitude: '',
+      displayMovies:false,
 
     }
 
@@ -57,9 +64,29 @@ class App extends React.Component {
         showMap: false,
         notFoundError: true,
         displayWeather: false,
+
       })
       console.log('weather error');
     }
+
+    try{
+      let moviesData = await axios.get(`${serverPort}/movie?cityName=${this.state.findQuery}`);
+      this.setState({
+        moviesInfo:moviesData.data,
+        displayMovies:true,
+      })
+      console.log(this.state.moviesInfo);
+    } catch{
+      this.setState({
+        showMap:false,
+        notFoundError:true,
+        displayWeather:false,
+        displayMovies:false,
+
+      })
+      console.log('weather error');
+    }
+
   }
 
   updateFindQuery = (event) => {
@@ -97,7 +124,14 @@ class App extends React.Component {
           </Card>
         }
         {this.state.displayWeather &&
-        <Weather weatherData={this.state.weatherInfo} />
+
+        <Weather weatherData={this.state.weatherInfo} displayWeather={this.state.displayWeather} />
+
+        }
+
+        {this.state.displayMovies &&
+        <Movies moviesData={this.state.moviesInfo} displayMovies={this.state.displayMovies} />
+
         }
      
 
