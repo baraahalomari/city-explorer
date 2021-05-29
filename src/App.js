@@ -67,6 +67,7 @@ class App extends React.Component {
         moviesInfo:moviesData.data,
         displayMovies:true,
       })
+      console.log(this.state.moviesInfo);
     } catch{
       this.setState({
         showMap:false,
@@ -75,8 +76,6 @@ class App extends React.Component {
         displayMovies:false,
       })
     }
-
-
 
   }
 
@@ -115,11 +114,12 @@ class App extends React.Component {
           </Card>
         }
         {this.state.displayWeather &&
-        <Weather weatherData={this.state.weatherInfo} />
+        <Weather weatherData={this.state.weatherInfo} displayWeather={this.state.displayWeather} />
+
         }
 
         {this.state.displayMovies &&
-        <Movies moviesData={this.state.moviesInfo} />
+        <Movies moviesData={this.state.moviesInfo} displayMovies={this.state.displayMovies} />
         }
      
 
