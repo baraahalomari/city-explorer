@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import { Form, Button, Card } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Weather from './Components/Weather';
 import Movies from './Components/Movie';
+import { Card, Form, Button } from 'react-bootstrap/';
+
+
+
+
 
 class App extends React.Component {
 
@@ -16,10 +21,12 @@ class App extends React.Component {
       notFoundError: false,
       displayWeather: false,
       weatherInfo: [],
+
       moviesInfo:[],
       latitude: '',
       longitude: '',
       displayMovies:false,
+
     }
 
   }
@@ -57,6 +64,7 @@ class App extends React.Component {
         showMap: false,
         notFoundError: true,
         displayWeather: false,
+
       })
       console.log('weather error');
     }
@@ -73,7 +81,9 @@ class App extends React.Component {
         showMap:false,
         notFoundError:true,
         displayMovies:false,
+
       })
+      console.log('weather error');
     }
 
   }
@@ -113,6 +123,7 @@ class App extends React.Component {
           </Card>
         }
         {this.state.displayWeather &&
+
         <Weather weatherData={this.state.weatherInfo} displayWeather={this.state.displayWeather} />
 
         }
