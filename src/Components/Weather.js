@@ -13,9 +13,9 @@ class Weather extends React.Component {
 
     return (
       <>
-        {(this.props.weatherData.length !== 0 && this.props.displayWeather) && this.props.weatherData.map(item => {
+        {(this.props.weatherData.length !== 0 && this.props.displayWeather) && this.props.weatherData.map((item,i) => {
           return (
-            <Card style={{ width: '18rem' }}>
+            <Card key={i} style={{ width: '18rem' }}>
               <Card.Body>
                 <Card.Title>Weather</Card.Title>
                   <Card.Text >

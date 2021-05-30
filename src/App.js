@@ -38,7 +38,7 @@ class App extends React.Component {
         showMap: true,
 
       })
-      console.log(this.state.dataLoc);
+     
      }catch{
 
      }
@@ -50,7 +50,7 @@ class App extends React.Component {
         displayWeather: true
 
       })
-      console.log(this.state.weatherInfo);
+      // console.log(this.state.weatherInfo);
     }
     catch {
       this.setState({
@@ -67,12 +67,11 @@ class App extends React.Component {
         moviesInfo:moviesData.data,
         displayMovies:true,
       })
-      console.log(this.state.moviesInfo);
+      // console.log(this.state.moviesInfo);
     } catch{
       this.setState({
         showMap:false,
         notFoundError:true,
-        displayWeather:false,
         displayMovies:false,
       })
     }
@@ -120,7 +119,7 @@ class App extends React.Component {
 
         {this.state.displayMovies &&
         <Movies moviesData={this.state.moviesInfo} displayMovies={this.state.displayMovies} />
-        }
+        } 
      
 
       </>
