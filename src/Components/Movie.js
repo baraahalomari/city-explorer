@@ -1,16 +1,18 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Card from 'react-bootstrap/CardDeck';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import Card from 'react-bootstrap/Card';
+
 
 class Movies extends React.Component {
   
   render() {
     return (
       <>
-        {this.props.moviesData.map(item => {
-          console.log(this.props.moviesData);
-          console.log(item.releaseData);
-          <Card className='MovieCard' style={{ width: '18rem' }}>
+        {this.props.moviesData.map((item,i) => {
+          // console.log(this.props.moviesData);
+          // console.log(item.releaseData);
+         
+        return( <Card key={i} className='MovieCard' style={{ width: '18rem' }}>
              <img variant='top' src={item.imgPath} alt='' className='image' height='300px' width='300px' />
             <Card.Body>
               <Card.Title>Movies</Card.Title>
@@ -26,7 +28,7 @@ class Movies extends React.Component {
               </Card.Text>
 
             </Card.Body>
-          </Card> 
+          </Card> )
 
          
         })
